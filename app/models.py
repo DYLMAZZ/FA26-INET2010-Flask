@@ -42,6 +42,7 @@ class User(UserMixin, db.Model):
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
     about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
+    pronouns: so.Mapped[Optional[str]] = so.mapped_column(sa.String(30))
     last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(
         default=lambda: datetime.now(timezone.utc))
 

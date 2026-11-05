@@ -5,7 +5,7 @@ import sqlalchemy as sa
 from app import db
 from app.models import User
 from wtforms import TextAreaField
-from wtforms.validators import Length
+from wtforms.validators import Length, Optional
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -16,6 +16,9 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    pronouns = StringField(
+        'Pronouns (optional)',
+        validators=[Optional(), Length(max=30)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
@@ -36,6 +39,7 @@ class RegistrationForm(FlaskForm):
 class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
+    pronouns = StringField('Pronouns (optional)',validators=[Optional(), Length(max=30)])
     submit = SubmitField('Submit')
 
     def __init__(self, original_username, *args, **kwargs):

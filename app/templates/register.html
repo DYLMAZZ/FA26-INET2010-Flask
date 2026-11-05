@@ -19,6 +19,13 @@
             {% endfor %}
         </p>
         <p>
+            {{ form.pronouns.label }}<br>
+            {{ form.pronouns(size=32, placeholder="e.g. they/them") }}<br>
+            {% for error in form.pronouns.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}<br>
             {% for error in form.password.errors %}

@@ -172,3 +172,34 @@ def explore():
         if posts.has_prev else None
     return render_template("index.html", title='Explore', posts=posts.items,
                            next_url=next_url, prev_url=prev_url)
+
+
+@app.route('/search')
+@login_required
+def search():
+    query = request.args.get('q', '').strip()
+    if not query:
+        flash('Please enter a search term.')
+        return redirect(url_for('explore'))
+    page = request.args.get('page', 1, type=int)
+    search_query = sa.select(Post).where(
+        Post.body.like(f'%{query}%')
+    ).order_by(Post.timestamp.desc())
+    posts = db.paginate(
+        search_query,
+        page=page,
+        per_page=app.config['POSTS_PER_PAGE'],
+        error_out=False
+    )
+    next_url = url_for('search', q=query, page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('search', q=query, page=posts.prev_num) \
+        if posts.has_prev else None
+    return render_template(
+        'index.html',
+        title='Search',
+        posts=posts.items,
+        next_url=next_url,
+        prev_url=prev_url,
+        search_query=query
+    )

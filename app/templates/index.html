@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
+    {% if search_query is defined %}
+        <h1>Search Results</h1>
+        <p>Showing results for: <strong>{{ search_query }}</strong></p>
+    {% elif title == 'Explore' %}
+        <h1>Explore Posts</h1>
+    {% else %}
+        <h1>Hi, {{ current_user.username }}!</h1>
+    {% endif %}
     {% if form %}
         <form action="" method="post">
             {{ form.hidden_tag() }}
